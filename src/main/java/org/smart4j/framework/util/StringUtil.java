@@ -36,4 +36,22 @@ public final class StringUtil {
 
     }
 
+    /**
+     * 分割字符串
+     *
+     * @param str
+     *                  待分割字符串
+     * @param splitStr
+     *                  分隔符
+     * @return
+     */
+    public static String[] splitString(String str, String splitStr) {
+
+        if (isNotEmpty(str)) {
+            return str.split(splitStr);
+        }
+        return null;
+
+    }
+
 }
