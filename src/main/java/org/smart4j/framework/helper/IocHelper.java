@@ -1,6 +1,5 @@
 package org.smart4j.framework.helper;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.smart4j.framework.annotation.Inject;
 import org.smart4j.framework.util.ArrayUtil;
 import org.smart4j.framework.util.CollectionUtil;
