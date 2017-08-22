@@ -55,4 +55,18 @@ public final class BeanHelper {
 
     }
 
+    /**
+     * 设置Bean实例
+     *
+     * @param cls
+     *              类
+     * @param obj
+     *              对象
+     */
+    public static void setBean(Class<?> cls, Object obj) {
+
+        BEAN_MAP.put(cls, obj);
+
+    }
+
 }
