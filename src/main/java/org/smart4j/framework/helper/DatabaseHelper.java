@@ -114,10 +114,10 @@ public class DatabaseHelper {
      */
     public static <T> T queryEntity(Class<T> entityClass, String sql, Object... params) {
 
-        T entity = null;
+        T entity;
         Connection conn = getConnection();
         try {
-            QUERY_RUNNER.query(conn, sql, new BeanHandler<T>(entityClass), params);
+            entity = QUERY_RUNNER.query(conn, sql, new BeanHandler<T>(entityClass), params);
         } catch (SQLException e) {
             LOGGER.error("query entity failure", e);
             throw new RuntimeException(e);
@@ -175,7 +175,7 @@ public class DatabaseHelper {
             values.append("?, ");
         }
         columns.replace(columns.lastIndexOf(","), columns.length(), ")");
-        values.replace(columns.lastIndexOf(","), columns.length(), ")");
+        values.replace(values.lastIndexOf(","), values.length(), ")");
         sql += columns + " VALUES " + values;
 
         Object[] params = fieldMap.values().toArray();
@@ -212,7 +212,7 @@ public class DatabaseHelper {
         sql += columns.substring(0, columns.lastIndexOf(",")) + "WHERE id = ?";
 
         List<Object> paramList = new ArrayList<Object>();
-        paramList.add(fieldMap.values());
+        paramList.addAll(fieldMap.values());
         paramList.add(id);
         Object[] params = paramList.toArray();
 
