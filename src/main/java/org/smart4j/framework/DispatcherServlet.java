@@ -47,7 +47,8 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void service(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
         // 获取请求方法与请求路径
         String requestMethod = req.getMethod().toLowerCase();
@@ -83,7 +84,12 @@ public class DispatcherServlet extends HttpServlet {
             Param param = new Param(paramMap);
             // 调用Action方法
             Method actionMethod = handler.getActionMethod();
-            Object result = ReflectionUtil.invokeMethod(controllerBean, actionMethod, param);
+            Object result;
+            if (param.isEmpty()) {
+                result = ReflectionUtil.invokeMethod(controllerBean, actionMethod);
+            } else {
+                result = ReflectionUtil.invokeMethod(controllerBean, actionMethod, param);
+            }
             // 处理 Action 方法返回值
             if (result instanceof View) {
                 // 返回 JSP 页面
@@ -97,7 +103,8 @@ public class DispatcherServlet extends HttpServlet {
                         for (Map.Entry<String, Object> entry: model.entrySet()) {
                             req.setAttribute(entry.getKey(), entry.getValue());
                         }
-                        req.getRequestDispatcher(ConfigHelper.getAppJspPath() + path).forward(req, resp);
+                        req.getRequestDispatcher(ConfigHelper.getAppJspPath() + path)
+                                .forward(req, resp);
                     }
                 } else if (result instanceof Data) {
                     // 返回 JSON 数据
