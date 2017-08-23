@@ -3,9 +3,11 @@ package org.smart4j.framework.helper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smart4j.framework.annotation.Aspect;
+import org.smart4j.framework.annotation.Service;
 import org.smart4j.framework.proxy.AspectProxy;
 import org.smart4j.framework.proxy.Proxy;
 import org.smart4j.framework.proxy.ProxyManager;
+import org.smart4j.framework.proxy.TransactionProxy;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -42,6 +44,21 @@ public class AopHelper {
     private static Map<Class<?>, Set<Class<?>>> createProxyMap() throws Exception {
 
         Map<Class<?>, Set<Class<?>>> proxyMap = new HashMap<Class<?>, Set<Class<?>>>();
+        addAspectProxy(proxyMap);// 普通切面代理
+        addTransactionProxy(proxyMap);// 事务代理
+        return proxyMap;
+
+    }
+
+    /**
+     * 普通切面代理
+     *
+     * @param proxyMap
+     *                  代理类及其目标类集合之间的映射关系
+     * @throws Exception
+     */
+    private static void addAspectProxy(Map<Class<?>, Set<Class<?>>> proxyMap) throws Exception {
+
         Set<Class<?>> proxyClassSet = ClassHelper.getClassSetBySuper(AspectProxy.class);
         for (Class<?> proxyClass: proxyClassSet) {
             if (proxyClass.isAnnotationPresent(Aspect.class)) {
@@ -50,7 +67,19 @@ public class AopHelper {
                 proxyMap.put(proxyClass, targetClassSet);
             }
         }
-        return proxyMap;
+
+    }
+
+    /**
+     * 事务代理
+     *
+     * @param proxyMap
+     *                  代理类及其目标类集合之间的映射关系
+     */
+    private static void addTransactionProxy(Map<Class<?>, Set<Class<?>>> proxyMap) {
+
+        Set<Class<?>> serviceClassSet = ClassHelper.getClassSetByAnnotation(Service.class);
+        proxyMap.put(TransactionProxy.class, serviceClassSet);
 
     }
 
