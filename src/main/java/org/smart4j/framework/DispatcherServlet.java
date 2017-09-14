@@ -45,7 +45,7 @@ public class DispatcherServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // 获取请求方法与请求路径
-        String requestMethod = req.getMethod().toLowerCase();
+        String requestMethod = req.getMethod();
         String requestPath = req.getPathInfo();
 
         ServletHelper.init(req, resp);
