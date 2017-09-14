@@ -1,6 +1,5 @@
 package org.smart4j.framework.helper;
 
-import com.sun.corba.se.spi.orbutil.fsm.Input;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -137,6 +136,14 @@ public final class UploadHelper {
 
     }
 
+    /**
+     * 批量上传文件
+     *
+     * @param basePath
+     *                      上传路径
+     * @param fileParamList
+     *                      文件信息列表
+     */
     public static void uploadFile(String basePath, List<FileParam> fileParamList) {
 
         try {
